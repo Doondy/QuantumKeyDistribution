@@ -1,0 +1,2 @@
+Average QBER without Eve: 0.00%
+Average QBER with Eve: 24.76%

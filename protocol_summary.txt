@@ -1,0 +1,18 @@
+QKD Protocol Comparison Summary
+========================================
+
+Noise Level: 0.0%
+- BB84 (No Eve):  0.00% | BB84 (With Eve): 25.17%
+- B92 (No Eve):  0.00% | B92 (With Eve): 33.72%
+
+Noise Level: 5.0%
+- BB84 (No Eve):  5.04% | BB84 (With Eve): 27.34%
+- B92 (No Eve):  8.99% | B92 (With Eve): 35.68%
+
+Noise Level: 10.0%
+- BB84 (No Eve):  9.98% | BB84 (With Eve): 29.82%
+- B92 (No Eve): 16.89% | B92 (With Eve): 37.43%
+
+Noise Level: 20.0%
+- BB84 (No Eve): 20.26% | BB84 (With Eve): 34.86%
+- B92 (No Eve): 28.59% | B92 (With Eve): 41.58%
