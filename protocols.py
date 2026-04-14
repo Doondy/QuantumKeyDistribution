@@ -45,7 +45,7 @@ def bb84_protocol(n_bits=100, eve_present=False, noise_level=0.0, apply_processi
     # Post-Processing
     if apply_processing and len(alice_sifted) > 0:
         # Reconciliation: Bob and Alice agree on a key
-        alice_recon, bob_recon = reconciliation.simple_parity_check(alice_sifted, bob_sifted)
+        alice_recon, bob_recon = reconciliation.cascade_reconciliation(alice_sifted, bob_sifted)
         
         # Privacy Amplification: Secure the key based on QBER
         final_key = privacy_amplification.amplify_privacy(alice_recon, qber)
@@ -53,7 +53,7 @@ def bb84_protocol(n_bits=100, eve_present=False, noise_level=0.0, apply_processi
         
     return qber, len(alice_sifted), final_key_len
 
-def b92_protocol(n_bits=100, eve_present=False, noise_level=0.0):
+def b92_protocol(n_bits=100, eve_present=False, noise_level=0.0, apply_processing=True):
     """
     B92 Protocol implementation:
     Alice prepares either |0> (Basis 0, State 0) or |45> (Basis 1, State 0).
@@ -111,7 +111,8 @@ def b92_protocol(n_bits=100, eve_present=False, noise_level=0.0):
             success_indices.append(i)
     
     if not success_indices:
-        return 0.0, 0
+        final_key_len = 0
+        return 0.0, 0, final_key_len
         
     alice_key = alice_key_bits[success_indices]
     bob_key = np.array(bob_results)
@@ -119,4 +120,59 @@ def b92_protocol(n_bits=100, eve_present=False, noise_level=0.0):
     errors = np.sum(alice_key != bob_key)
     qber = (errors / len(alice_key)) * 100
     
-    return qber, len(alice_key)
+    final_key_len = 0
+    if apply_processing and len(alice_key) > 0:
+        alice_recon, bob_recon = reconciliation.cascade_reconciliation(alice_key, bob_key)
+        final_key = privacy_amplification.amplify_privacy(alice_recon, qber)
+        final_key_len = len(final_key) * 4
+    
+    return qber, len(alice_key), final_key_len
+
+def six_state_protocol(n_bits=100, eve_present=False, noise_level=0.0, apply_processing=True):
+    alice = core.Alice(n_bits, num_bases=3)
+    bob = core.Bob(n_bits, num_bases=3)
+    channel = core.QuantumChannel(noise_level)
+    
+    # Alice prepares states
+    alice_bits, alice_bases = alice.prepare_qubits()
+    
+    # Optional Eavesdropping
+    bits_sent = alice_bits
+    bases_sent = alice_bases
+    if eve_present:
+        eve = core.Eve(n_bits, num_bases=3)
+        bits_sent, bases_sent = eve.intercept(alice_bits, alice_bases)
+    
+    # Channel transmission
+    noisy_bits = channel.transmit(bits_sent)
+    
+    # Bob measures
+    bob_results = []
+    for i in range(n_bits):
+        if bob.bases[i] == bases_sent[i]:
+            bob_results.append(noisy_bits[i])
+        else:
+            bob_results.append(np.random.randint(2))
+    
+    bob_results = np.array(bob_results)
+    
+    # Sifting: Keep bits where Alice and Bob's bases match
+    sifted_indices = np.where(alice_bases == bob.bases)[0]
+    alice_sifted = alice_bits[sifted_indices]
+    bob_sifted = bob_results[sifted_indices]
+    
+    # QBER Calculation (on the sifted key)
+    errors = np.sum(alice_sifted != bob_sifted)
+    qber = (errors / len(alice_sifted)) * 100 if len(alice_sifted) > 0 else 0
+    final_key_len = 0
+    
+    # Post-Processing
+    if apply_processing and len(alice_sifted) > 0:
+        # Reconciliation: Bob and Alice agree on a key
+        alice_recon, bob_recon = reconciliation.cascade_reconciliation(alice_sifted, bob_sifted)
+        
+        # Privacy Amplification: Secure the key based on QBER
+        final_key = privacy_amplification.amplify_privacy(alice_recon, qber)
+        final_key_len = len(final_key) * 4 # Convert hex characters back to bit equivalent
+        
+    return qber, len(alice_sifted), final_key_len

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Key Distribution Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <a href="/" class="logo" style="text-decoration: none; color: inherit;">
+                <div class="logo-icon-wrapper" style="width: 40px; height: 40px; margin-right: 8px;">
+                    <img src="logo.png" alt="Logo">
+                </div>
+                <h1>Quantum<span>Secure</span></h1>
+            </a>
+            <div class="nav-links" style="display: flex; align-items: center; gap: 1.5rem; margin-left: auto; margin-right: 2rem;">
+                <!-- Links populated by auth.js -->
+            </div>
+            <div class="status-badge" id="backend-status">
+                <span class="dot"></span> Backend: Offline
+            </div>
+        </header>
+
+        <main>
+            <section class="controls-panel">
+                <h2>Simulation Controls</h2>
+                <div class="control-group">
+                    <label>Protocol</label>
+                    <select id="protocol-select">
+                        <option value="bb84">BB84 (Bennett-Brassard)</option>
+                        <option value="b92">B92</option>
+                        <option value="six_state">Six-State Protocol</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Qubits to Send: <span id="bit-count-val">24</span></label>
+                    <input type="range" id="bit-count" min="8" max="64" step="8" value="24">
+                </div>
+                <div class="control-group">
+                    <label>Channel Noise: <span id="noise-val">0%</span></label>
+                    <input type="range" id="noise-level" min="0" max="0.2" step="0.01" value="0">
+                </div>
+                <div class="control-group toggle">
+                    <label>Eavesdropping (Eve)</label>
+                    <input type="checkbox" id="eve-toggle">
+                </div>
+                <button id="run-btn" class="primary-btn">Initialize Simulation</button>
+            </section>
+
+            <section class="visualization-panel">
+                <div class="nodes-container">
+                    <div class="node alice" id="alice-node">
+                        <div class="node-icon"><i data-lucide="user"></i></div>
+                        <h3>Alice</h3>
+                        <div class="p-field" id="alice-output"></div>
+                    </div>
+
+                    <div class="quantum-channel">
+                        <div class="channel-line"></div>
+                        <div class="particles" id="photon-stream"></div>
+                        <div class="eve-node invisible" id="eve-node">
+                            <div class="node-icon"><i data-lucide="spy"></i></div>
+                            <h3>Eve</h3>
+                        </div>
+                    </div>
+
+                    <div class="node bob" id="bob-node">
+                        <div class="node-icon"><i data-lucide="user"></i></div>
+                        <h3>Bob</h3>
+                        <div class="p-field" id="bob-input"></div>
+                    </div>
+                </div>
+
+                <div class="steps-log" id="steps-log">
+                    <div class="empty-state">Run a simulation to see results</div>
+                </div>
+            </section>
+
+            <section class="results-panel">
+                <h2>Analytics Dashboard</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <canvas id="qber-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="yield-chart"></canvas>
+                    </div>
+                </div>
+                <div class="summary-stats" id="summary-stats">
+                    <!-- Stats will be injected here -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="auth.js"></script>
+    <script>
+        Auth.checkAccess(); // Protect this route
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

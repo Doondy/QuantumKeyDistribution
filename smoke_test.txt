@@ -1,0 +1,8 @@
+Full QKD Simulation Summary (Post-Processing Included)
+============================================================
+
+BB84 Protocol:
+Noise % | QBER (No Eve) | Final Key (No Eve) | QBER (With Eve) | Final Key (With Eve)
+--------------------------------------------------------------------------------
+   0.0% |          0.00% |               40.0 |         18.37% |                 0.0
+   5.0% |          8.16% |                8.0 |         27.27% |                 0.0

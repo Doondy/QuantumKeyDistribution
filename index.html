@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumSecure | Next-Gen Quantum Key Distribution</title>
+    <meta name="description" content="Simulate and analyze state-of-the-art Quantum Key Distribution protocols. Secure your future with quantum-resistant cryptography.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="landing.css">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="landing-container">
+        <nav>
+            <a href="/" class="logo">
+                <div class="logo-icon-wrapper">
+                    <img src="logo.png" alt="QuantumSecure Icon">
+                </div>
+                <span>Secure</span>
+            </a>
+            <div class="nav-links">
+                <!-- Links will be populated by auth.js -->
+                <a href="#features">Features</a>
+                <a href="/login.html" class="btn btn-primary">Sign In</a>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <img src="quantum_hero_bg_1776141986251.png" alt="Quantum Background" class="hero-bg">
+            <div class="hero-overlay"></div>
+            
+            <div class="hero-content">
+                <span class="badge">Next-Generation Security</span>
+                <h1>Secure Communication in the Quantum Era</h1>
+                <p>Advanced simulation and analysis platform for Quantum Key Distribution protocols. Visualize photon-level exchanges and test security against sophisticated eavesdropping.</p>
+                <div class="cta-group">
+                    <a href="app.html" class="btn btn-primary">Launch Simulator</a>
+                    <a href="#features" class="btn btn-secondary">Explore Features</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="section-header">
+                <h2>Why QuantumSecure?</h2>
+                <p>Robust, pedagogical, and enterprise-ready QKD simulations.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="zap"></i></div>
+                    <h3>Real-time Visualization</h3>
+                    <p>Watch BB84 and other protocols execute step-by-step. See how qubits are prepared, transmitted, and measured.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="activity"></i></div>
+                    <h3>QBER Analytics</h3>
+                    <p>Deep dive into Quantum Bit Error Rate (QBER) and its impact on final key secret rate and reconciliation efficiency.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="eye-off"></i></div>
+                    <h3>Eve Analysis</h3>
+                    <p>Simulate Intercept-Resend attacks. Quantify the information leakage and understand how privacy amplification secures the key.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="protocols" class="features" style="background: rgba(17, 24, 39, 0.4);">
+            <div class="section-header">
+                <h2>Multi-Protocol Support</h2>
+                <p>Benchmark the most influential protocols in the field.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>BB84 Protocol</h3>
+                    <p>The pioneer of QKD. Using four polarization states across two non-orthogonal bases.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>B92 Protocol</h3>
+                    <p>A minimalist two-state approach. Simpler implementation with unique security trade-offs.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Six-State Protocol</h3>
+                    <p>Maximum security using three orthogonal bases to achieve even lower error tolerance for hackers.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="logo" style="justify-content: center; margin-bottom: 1.5rem;">
+                <div class="logo-icon-wrapper" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <img src="logo.png" alt="QuantumSecure Icon">
+                </div>
+                <span>Secure</span>
+            </div>
+            <p>&copy; 2026 Quantum Technologies Inc. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        lucide.createIcons();
+        if (Auth.isAuthenticated()) {
+            const cta = document.querySelector('.cta-group .btn-primary');
+            if (cta) {
+                cta.textContent = 'Go to Simulator';
+                cta.href = '/app.html';
+            }
+        }
+    </script>
+</body>
+</html>

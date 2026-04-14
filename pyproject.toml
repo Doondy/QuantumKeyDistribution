@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qkd-simulation"
+version = "0.1.0"
+description = "Quantum Key Distribution simulation of BB84, B92, and Six-State protocols."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "matplotlib",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+qkd-sim = "main:main"

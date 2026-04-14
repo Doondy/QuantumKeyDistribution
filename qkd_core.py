@@ -1,24 +1,25 @@
 import numpy as np
 
 class QuantumState:
-    """Representation of a single qubit state in BB84 bases."""
+    """Representation of a single qubit state in BB84/Six-State bases."""
     RECTILINEAR = 0  # + basis: 0 -> |0>, 1 -> |90>
     DIAGONAL = 1     # x basis: 0 -> |45>, 1 -> |135>
+    CIRCULAR = 2     # circular basis: 0 -> |R>, 1 -> |L>
 
 class Alice:
-    def __init__(self, n_bits):
+    def __init__(self, n_bits, num_bases=2):
         self.n_bits = n_bits
         self.bits = np.random.randint(2, size=n_bits)
-        self.bases = np.random.randint(2, size=n_bits)
+        self.bases = np.random.randint(num_bases, size=n_bits)
 
     def prepare_qubits(self):
         """Alice prepares qubits based on her bits and bases."""
         return self.bits, self.bases
 
 class Bob:
-    def __init__(self, n_bits):
+    def __init__(self, n_bits, num_bases=2):
         self.n_bits = n_bits
-        self.bases = np.random.randint(2, size=n_bits)
+        self.bases = np.random.randint(num_bases, size=n_bits)
 
     def measure(self, qubits, channel_bases):
         """
@@ -35,9 +36,9 @@ class Bob:
         return np.array(results)
 
 class Eve:
-    def __init__(self, n_bits):
+    def __init__(self, n_bits, num_bases=2):
         self.n_bits = n_bits
-        self.bases = np.random.randint(2, size=n_bits)
+        self.bases = np.random.randint(num_bases, size=n_bits)
 
     def intercept(self, bits, bases):
         """Eve intercepts Alice's transmission and measures it."""

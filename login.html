@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | QuantumSecure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="landing.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .login-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.15), transparent);
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header .logo {
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 1rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            display: none;
+            text-align: center;
+        }
+
+        .hint {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-section">
+        <div class="login-card">
+            <div class="login-header">
+                <a href="/" class="logo">
+                    <div class="logo-icon-wrapper" style="width: 80px; height: 80px; margin: 0 auto 1.5rem auto;">
+                        <img src="logo.png" alt="Logo" style="width: 140%;">
+                    </div>
+                    <span>Secure</span>
+                </a>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Secure Access Portal</p>
+            </div>
+
+            <div id="error" class="error-msg"></div>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary login-btn">Sign In</button>
+            </form>
+
+            <div class="hint">
+                <p>Admin: <code>admin</code> / <code>password123</code></p>
+                <p>User: <code>user</code> / <code>securepass</code></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        lucide.createIcons();
+        
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error');
+            
+            errorDiv.style.display = 'none';
+            
+            const result = await Auth.login(user, pass);
+            if (result.success) {
+                const userData = Auth.getUser();
+                window.location.href = userData.role === 'admin' ? '/admin.html' : '/app.html';
+            } else {
+                errorDiv.textContent = result.message;
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
